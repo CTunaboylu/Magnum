@@ -45,7 +45,7 @@ for i in range(0,10):
     tx = "".join([random.choice(string.ascii_letters + string.digits) for n in range(32)])
     block += tx + "\n"  
 h = hashlib.sha256(block.encode('utf-8')).hexdigest()
-
+print(f'Hash of the block: {h}')
 print ("The transaction block: \n", block)
 signature = sk.sign(block.encode('utf-8'))
 
@@ -57,11 +57,12 @@ except ecdsa.BadSignatureError:
     print (False)
 
 # the second block of transactions
-block = h  # set to the has of the previous block
+block = h  # set to the hash of the previous block
 for i in range(0,10):
     tx = "".join([random.choice(string.ascii_letters + string.digits) for n in range(32)])
     block += tx + "\n"  
 h = hashlib.sha256(block.encode('utf-8')).hexdigest()    
+print(f'Hash of the block: {h}')
 
 print ("The transaction block: \n", block)
 signature = sk.sign(block.encode('utf-8'))
@@ -74,11 +75,12 @@ except ecdsa.BadSignatureError:
     print (False)
 
 # the third block of transactions
-block = h  # set to the has of the previous block
+block = h  # set to the hash of the previous block
 for i in range(0,10):
     tx = "".join([random.choice(string.ascii_letters + string.digits) for n in range(32)])
     block += tx + "\n"  
 h = hashlib.sha256(block.encode('utf-8')).hexdigest()
+print(f'Hash of the block: {h}')
 
 print ("The transaction block: \n", block)
 signature = sk.sign(block.encode('utf-8'))
