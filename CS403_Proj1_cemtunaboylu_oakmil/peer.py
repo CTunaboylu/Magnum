@@ -60,9 +60,9 @@ class Peer:
 	__block_file = '' 
 	__block = ''
 	__verifying_key = ecdsa.keys.VerifyingKey
-	__signing_key = ecdsa.keys.SigningKey
-	
-	def __init__(self, ip:str, id:int, api_url = 'R'):
+	__signing_key = ecdsa.keys.SigningKey 
+	__CONSENSUS = 0	
+	def __init__(self, ip:str, id:int, api_url):
 		if len(ip)<5: # port only
 			self.__IP = '127.0.0.1:'+ip
 		else:
@@ -70,22 +70,16 @@ class Peer:
 		self.__ID = id
 		self.__block_file = "chain."+ip+".txt"
 		with open(self.__block_file, 'w') as f:
-			f.close()
+			f.close() # just create such a file 
 		self.__socket.connect('tcp://'+self.__IP)	
 		self.__signing_key = ecdsa.SigningKey.generate(curve=ecdsa.NIST256p, hashfunc = hashlib.sha256)
 		self.__verifying_key = self.__signing_key.get_verifying_key()
-		if 'R' in api_url:
-			#means that this is the root to create the API
-			if len(api_url) == 1: # create with default local IP
-				api_url = '127.0.0.1'
-				port = 5000 + id
-			self.__MCA = MCA(api_url, port)
+		self.__API = api_url # localhost:5000 
 		
 	def join(self):
 		v_key = self.__verifying_key.to_string().decode('latin1')
-		#join_data = {'verifying_key':v_key}
-		#join_data = json.dumps(join_data)
-		to_join = "127.0.0.1:5000"
+		j_data  = {'verifying_key':v_key}
+		j_data = json.dumps(j_data)
 		response = self.__MCA.post_API(to_join,'/join', self.__IP, v_key)
 		if _DEBUG: 
 			print(response)
